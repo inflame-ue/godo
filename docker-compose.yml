@@ -6,7 +6,18 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+  godo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_URI: "mongodb://mongo:27017"
+      MONGODB_NAME: "todos_database"
+      PORT: 8080
+    depends_on: [mongo]
 
 volumes:
   mongo-data:
-    

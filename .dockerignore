@@ -1,0 +1,5 @@
+# git bloat
+.git
+
+# no environment files
+.env
