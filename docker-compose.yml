@@ -7,9 +7,7 @@ services:
     volumes:
       - mongo-data:/data/db
   godo:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: inflameue/godo:latest
     restart: always
     ports:
       - "8080:8080"

@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install Docker Packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose-v2
+        state: latest
+        update_cache: true
+
+    - name: Enable the docker service
+      systemd_service:
+        state: started
+        name: docker
+
+    - name: Add user to the Docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Create the app working directory
+      file:
+        path: /app
+        state: directory
+        mode: "0755"
+
+    - name: Copy docker-compose.yml onto the vm
+      copy:
+        src: ../docker-compose.yml
+        dest: /app/docker-compose.yml
+
+    - name: Start the docker-compose service
+      community.docker.docker_compose_v2:
+        project_src: /app
+        state: present
+
