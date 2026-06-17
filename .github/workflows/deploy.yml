@@ -17,11 +17,13 @@ jobs:
         with:
           push: true
           tags: inflameue/godo:latest
-      - name: Docker Compose via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: docker compose pull && docker compose up -d
+      - name: Install SSH key
+        run: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      - name: Deploy via SSH
+        run: |
+            ssh -i ~/.ssh/id_rsa -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+              "docker compose pull && docker compose up -d"
