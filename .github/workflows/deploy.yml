@@ -25,5 +25,5 @@ jobs:
             ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: Deploy via SSH
         run: |
-            ssh -i ~/.ssh/id_rsa -p -v StrictHostKeyChecking=no ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            ssh -i ~/.ssh/id_rsa -v StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
               "docker compose pull && docker compose up -d"
