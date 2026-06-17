@@ -22,6 +22,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY | base64decode }}
+          key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: docker compose pull && docker compose up -d
