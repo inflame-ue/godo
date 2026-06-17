@@ -17,13 +17,10 @@ jobs:
         with:
           push: true
           tags: inflameue/godo:latest
-      - name: Install SSH key
-        run: |
-            mkdir -p ~/.ssh
-            echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: Deploy via SSH
-        run: |
-            ssh -i ~/.ssh/id_rsa -v -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
-              "docker compose pull && docker compose up -d"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: docker compose pull && docker compose up -d
