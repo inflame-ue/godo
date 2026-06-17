@@ -26,4 +26,4 @@ jobs:
       - name: Deploy
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
-            "docker compose pull && docker compose up -d"
+            "cd /app && docker compose pull && docker compose up -d"
